@@ -12,8 +12,9 @@ class Lesson extends Model
     protected $fillable = [  
         'title',  
         'description',  
-        'class_id',  
-        'duration', // duration in minutes  
+        'course_id',
+        'file', 
+        'duration', 
     ];  
 
     public function class()  

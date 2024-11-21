@@ -30,7 +30,7 @@
         </div>
 
         <div>
-            <ul class="flex space-x-5 justify-center font-[sans-serif]">
+            <ul class="flex space-x-5 justify-center font-[sans-serif] pt-7">
                 <li
                     class="flex items-center justify-center shrink-0 hover:bg-blue-300 bg-[#FFD700] w-[150px] h-[150px] rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-gray-500" viewBox="0 0 55.753 55.753">
@@ -82,9 +82,16 @@
                         <div class="p-4">
                             <p class="text-gray-700 mb-2">{{ \Str::limit($course->description, 100) }}</p>
                             <p class="text-sm text-gray-500"><strong>Class:</strong> {{ $course->classes->name }}</p>
+                            {{-- <a href="{{ route('coach.lesson', $course->id) }}" class="block mt-4"> --}}
+                                <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition">
+                                    View Course
+                                </button>
+                            </a>
                         </div>
                     </div>
+                    
                 @endforeach
+                
             </div>
         </div>
     </div>

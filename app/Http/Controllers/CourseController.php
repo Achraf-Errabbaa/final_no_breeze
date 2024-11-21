@@ -44,5 +44,11 @@ class CourseController extends Controller
         // Redirect to the course management page with a success message
         return redirect()->route('coach.course')->with('success', 'Course created successfully!');
     }
+    public function destroy(Course $class)
+    {
+        $class->delete();
+
+        return redirect()->route('coach.course')->with('success', 'Class deleted successfully!');
+    }
     
 }

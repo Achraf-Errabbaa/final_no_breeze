@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1 class="flex items-center justify-center">Class Management</h1>        
+        <h1 class="flex items-center justify-center">Class Management</h1>
         <form action="{{ route('classes.store') }}" method="POST"
             class="max-w-md mx-auto p-6 bg-white border border-gray-300 rounded-lg shadow-md">
             @csrf
@@ -37,7 +37,8 @@
                     <tr class="border-b hover:bg-gray-100">
                         <td class="py-3 px-4 text-sm">{{ $class->name }}</td>
                         <td class="py-3 px-4 text-sm">{{ $class->max_participants }}</td>
-                        <td class="py-3 px-4 text-sm">
+                        <td class="py-3 px-4 text-sm flex gap-2">
+                            <!-- Delete Button -->
                             <form action="{{ route('classes.destroy', $class->id) }}" method="POST"
                                 style="display:inline;">
                                 @csrf
@@ -45,6 +46,11 @@
                                 <button type="submit"
                                     class="bg-red-600 text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50 rounded-md px-2 py-1 text-xs">Delete</button>
                             </form>
+
+                            <!-- View Courses Button -->
+                            <a href="{{ route('class.courses', $class->id) }}"
+                                class="bg-blue-600 text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 rounded-md px-2 py-1 text-xs">View
+                                Courses</a>
                         </td>
                     </tr>
                 @endforeach

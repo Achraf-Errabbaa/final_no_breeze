@@ -1,4 +1,4 @@
-<?php  
+<?php
 
 namespace App\Http\Controllers;
 
@@ -13,6 +13,13 @@ class ClassController extends Controller
         $classes = ClassModel::all();
         return view('coach.class', compact('classes'));
     }
+    public function viewCourses(ClassModel $class)
+    {
+        $classes = ClassModel::all();
+        $courses = $class->courses;
+        return view('coach.course', compact('class','classes', 'courses'));
+    }
+
 
     // Store a newly created class
     public function store(Request $request)
