@@ -54,7 +54,7 @@ class RegisterController extends Controller
         // Mail::to($user->email)->send(new UserPendingApproval($user));
 
         // Redirige vers la page de connexion avec un message de statut
-        return redirect()->route('login')->with('status', 'Votre compte est en attente d\'approbation.');
+        return redirect()->route('home.home')->with('status', 'Votre compte est en attente d\'approbation.');
     }
 
     /**

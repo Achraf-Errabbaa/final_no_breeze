@@ -22,7 +22,7 @@
     <!-- Main Content -->
     <div class="flex">
         @yield('sidebar') {{-- Optional Sidebar --}}
-        <main class="flex-1 p-6">
+        <main class="flex-1 ">
             @yield('content')
         </main>
     </div>

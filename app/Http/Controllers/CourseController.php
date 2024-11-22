@@ -14,9 +14,9 @@ class CourseController extends Controller
         $classes = ClassModel::all();
 
         $courses = Course::all();
-
+        $categories = ['Programming', 'Design', 'Marketing', 'Business'];
         // Pass the courses and classes to the view
-        return view('coach.course', compact('courses', 'classes'));
+        return view('coach.course', compact('courses','categories', 'classes'));
     }
     public function index2()
     {
@@ -36,6 +36,7 @@ class CourseController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'class_id' => 'required|exists:classmodels,id',
+            'category' => 'required|string|max:255',
         ]);
 
 

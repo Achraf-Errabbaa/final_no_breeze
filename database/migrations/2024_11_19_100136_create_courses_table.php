@@ -13,6 +13,7 @@ class CreateCoursesTable extends Migration
             $table->string('title');  
             $table->text('description');
             $table->foreignId('class_id')->constrained('classmodels')->onDelete('cascade');
+            $table->string('category')->nullable();
             $table->timestamps();  
         });  
     }  

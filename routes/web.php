@@ -5,10 +5,13 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
+Route::get('/', function () {
+    return view('welcome');
+});
 
-
-Route::get('/', [CourseController::class, 'index2'])->name('home.home');
+Route::get('/home', [CourseController::class, 'index2'])->name('home.home');
 
 Route::get('/course', [CourseController::class, 'index'])->name('coach.course');
 Route::post('/course/store', [CourseController::class, 'store'])->name('coach.store');
@@ -22,7 +25,7 @@ Route::delete('/lesson/{lesson}', [LessonController::class, 'destroy'])->name('l
 Route::get('/class', [ClassController::class, 'index'])->name('coach.class');
 Route::post('/class/store', [ClassController::class, 'store'])->name('classes.store');
 Route::delete('/classes/{class}', [ClassController::class, 'destroy'])->name('classes.destroy');
-
+Route::get('/class/courses/{class}', [ClassController::class, 'viewCourses'])->name('class.courses');
 
 
 // Route pour afficher le formulaire de connexion
@@ -35,7 +38,7 @@ Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 
-use App\Http\Controllers\Auth\RegisterController;
+
 
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);

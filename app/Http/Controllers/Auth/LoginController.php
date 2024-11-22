@@ -46,8 +46,8 @@ class LoginController extends Controller
                 return redirect()->route('login')->with('error', 'Votre compte est en attente d\'approbation.');
             }
 
-            // Si l'utilisateur est approuvé, rediriger vers la page d'accueil ou une autre page protégée
-            return redirect()->intended('/home'); // Remplacez '/home' par la route que vous souhaitez
+            
+            return redirect()->intended('home.home');
         }
 
         // Si l'authentification échoue
