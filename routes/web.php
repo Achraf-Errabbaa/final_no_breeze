@@ -6,12 +6,14 @@ use App\Http\Controllers\LessonController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Models\Lesson;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/home', [CourseController::class, 'index2'])->name('home.home');
+Route::get('/course/lessons/{course}', [LessonController::class, 'lessonView'])->name('course.lessons');
 
 Route::get('/course', [CourseController::class, 'index'])->name('coach.course');
 Route::post('/course/store', [CourseController::class, 'store'])->name('coach.store');

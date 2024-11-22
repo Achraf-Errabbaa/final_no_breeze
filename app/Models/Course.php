@@ -13,6 +13,7 @@ class Course extends Model
         'title',  
         'description',  
         'class_id',
+        'file',
         'category'
     ];  
 

@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex justify-center items-center min-h-screen w-full h-full bg-cover bg-center  bg-no-repeat bg-gray-50 relative">
-        <video autoplay muted loop class="absolute w-full h-full object-cover">
+    <div class="flex justify-center items-center min-h-screen w-full h-full bg-cover bg-center  bg-no-repeat relative">
+        <video autoplay muted loop class="absolute w-full inset-0 h-full object-cover">
             <source src="{{ asset('images/fps.mp4') }}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -82,4 +82,5 @@
             </form>
         </div>
     </div>
+    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
 @endsection

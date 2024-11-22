@@ -14,7 +14,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-[#7db6e5]">
 
     <!-- Dynamic Navigation -->
     @include('layouts.navigation')

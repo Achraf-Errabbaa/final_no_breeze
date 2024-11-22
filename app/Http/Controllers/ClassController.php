@@ -19,6 +19,7 @@ class ClassController extends Controller
         $courses = $class->courses;
         return view('coach.course', compact('class','classes', 'courses'));
     }
+    
 
 
     // Store a newly created class

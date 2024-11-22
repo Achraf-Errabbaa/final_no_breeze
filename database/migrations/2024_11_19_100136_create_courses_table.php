@@ -14,6 +14,7 @@ class CreateCoursesTable extends Migration
             $table->text('description');
             $table->foreignId('class_id')->constrained('classmodels')->onDelete('cascade');
             $table->string('category')->nullable();
+            $table->string('file')->nullable();
             $table->timestamps();  
         });  
     }  

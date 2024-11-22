@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div>
+<div class="bg-white">
     
     
 
     <div>
-        <div class="flex bg-white flex-col md:flex-row items-center justify-between px-6 py-12 ">
+        <div class="flex  flex-col md:flex-row items-center justify-between px-6 py-12 ">
 
             <div class="md:w-1/2 space-y-6">
                 <h1 class="text-4xl font-bold text-gray-800">Welcome to Your Learning Journey</h1>
@@ -79,10 +79,16 @@
                         <div class="bg-blue-500 text-white px-4 py-2">
                             <h5 class="text-lg font-semibold">{{ $course->title }}</h5>
                         </div>
+                        <div>
+                            <img class="w-full h-[300px] object-cover"
+                                src="{{ asset('storage/' . $course->file) }}" alt="{{ $course->title }}">
+                        </div>
                         <div class="p-4">
                             <p class="text-gray-700 mb-2">{{ \Str::limit($course->description, 100) }}</p>
                             <p class="text-sm text-gray-500"><strong>Class:</strong> {{ $course->classes->name }}</p>
-                            {{-- <a href="{{ route('coach.lesson', $course->id) }}" class="block mt-4"> --}}
+                            <p class="text-sm text-gray-500"><strong>Category:</strong>
+                                {{ $course->category ?? 'Uncategorized' }}</p>
+                            <a href="{{ route('course.lessons', $course->id) }}" class="block mt-4">
                                 <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition">
                                     View Course
                                 </button>

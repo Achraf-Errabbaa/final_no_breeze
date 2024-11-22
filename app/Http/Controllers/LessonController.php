@@ -17,6 +17,12 @@ class LessonController extends Controller
         // Pass the lessons and course to the view
         return view('coach.lesson', compact('lessons', 'course'));
     }
+    public function lessonView(Course $course, Lesson $lesson)
+    {
+        $courses = Course::all();
+        $lessons = $course->lessons;
+        return view('coach.lesson', compact('lessons','course', 'courses', 'lesson'));
+    }
 
     // Store a newly created lesson for a specific course
     public function store(Request $request, Course $course)
