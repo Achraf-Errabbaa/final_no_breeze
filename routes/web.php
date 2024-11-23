@@ -4,8 +4,8 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ProfileController;
+
 use App\Models\Lesson;
 
 Route::get('/', function () {
@@ -30,18 +30,15 @@ Route::delete('/classes/{class}', [ClassController::class, 'destroy'])->name('cl
 Route::get('/class/courses/{class}', [ClassController::class, 'viewCourses'])->name('class.courses');
 
 
-// Route pour afficher le formulaire de connexion
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 
-// Route pour soumettre les informations de connexion
-Route::post('login', [LoginController::class, 'login']);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route pour la déconnexion
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-
-
-
-Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [RegisterController::class, 'register']);
-Route::post('login', [RegisterController::class, 'login'])->name('login');
+require __DIR__.'/auth.php';
