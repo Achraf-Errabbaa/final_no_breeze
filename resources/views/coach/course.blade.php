@@ -1,104 +1,114 @@
 @extends('layouts.app')
 
 @section('content')
-    @php
-        $categories = ['Programming', 'Design', 'Marketing', 'Business'];
-    @endphp
+@php
+    $categories = ['Programming', 'Design', 'Marketing', 'Business'];
+@endphp
 
-    <head>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    </head>
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7AB2D3',
+                        secondary: '#F5F7F8',
+                        accent: '#F4CE14',
+                        text: '#45474B',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
 
-    <div class="container p-6">
-        <!-- Form to Create a New Course -->
-        <h2 class="text-3xl font-semibold mb-8 text-center">Create a New Course</h2>
+<div class="bg-secondary min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-4xl font-bold text-center text-primary mb-12 animate-fade-in">Course Management</h1>
 
-        <div class="flex items-center justify-center">
-            <div class="bg-[#1E3E62] p-8 w-[600px] lg:w-[800px] rounded-xl shadow-lg">
-                <form action="{{ route('coach.store') }}" enctype="multipart/form-data" method="POST" class="w-full">
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Create New Course Section -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+                <div class="bg-primary p-6">
+                    <h2 class="text-2xl font-semibold text-white">Create a New Course</h2>
+                </div>
+                <form action="{{ route('coach.store') }}" enctype="multipart/form-data" method="POST" class="p-6 space-y-6">
                     @csrf
-                    <h2 class="text-2xl font-bold text-white mb-6 text-center">Create a New Course</h2>
-
-                    <!-- File Upload -->
-                    <div class="mb-6">
-                        <label for="file" class="block text-sm font-medium text-white">Upload File:</label>
-                        <div class="relative">
-                            <div id="fileThumbnail"
-                                class="w-full h-[200px] bg-gray-300 border border-blue-300 rounded-md flex items-center justify-center bg-cover bg-center"
-                                style="background-image: url('path/to/thumbnail.jpg');">
-                                <span class="text-white">Choose an image</span>
-                            </div>
-                            <input type="file" name="file" id="file" class="absolute inset-0 opacity-0" required
-                                onchange="updateThumbnail(event)">
+                    <div>
+                        <label for="file" class="block text-sm font-medium text-text mb-2">Course Image:</label>
+                        <div id="fileThumbnail" class="w-full h-40 bg-secondary border-2 border-dashed border-primary rounded-xl flex items-center justify-center cursor-pointer hover:bg-primary/10 transition duration-300">
+                            <span class="text-primary text-sm">Choose an image</span>
                         </div>
+                        <input type="file" name="file" id="file" class="hidden" required onchange="updateThumbnail(event)">
                     </div>
-
-                    <!-- Course Title -->
-                    <div class="mb-6">
-                        <label for="title" class="block text-sm font-medium text-white">Course Title:</label>
-                        <input type="text" name="title" id="title"
-                            class="w-full p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
-                            required>
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-text mb-2">Course Title:</label>
+                        <input type="text" name="title" id="title" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary" required>
                     </div>
-
-                    <!-- Description -->
-                    <div class="mb-6">
-                        <label for="description" class="block text-sm font-medium text-white">Description:</label>
-                        <textarea name="description" id="description"
-                            class="w-full p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
-                            required></textarea>
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-text mb-2">Description:</label>
+                        <textarea name="description" id="description" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary" required></textarea>
                     </div>
-
-                    <!-- Category -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-white mb-3">Category:</label>
-                        <button type="button" id="chooseCategoryBtn"
-                            class="w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">Choose
-                            Category</button>
-                        <input type="hidden" name="category" id="categoryInput" required>
-                    </div>
-
-                    <!-- Class Selection -->
-                    <div class="mb-6">
-                        <label for="class_id" class="block text-sm font-medium text-white">Class:</label>
-                        <select name="class_id" id="class_id"
-                            class="w-full p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            required>
+                    <div>
+                        <label for="class_id" class="block text-sm font-medium text-text mb-2">Class:</label>
+                        <select name="class_id" id="class_id" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary" required>
                             <option value="" disabled selected>Select a class</option>
                             @foreach ($classes as $class)
-                                <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                <option value="{{ $class->id }}">{{ $class->name }} </option>
+                            @endforeach
+                            @foreach ( $courses as $course )
+                            <p> ({{ $course->classes->category ?? 'Uncategorized' }})</p>
                             @endforeach
                         </select>
                     </div>
-
-                    <!-- Submit Button -->
-                    <button type="submit"
-                        class="w-full bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition duration-200">Create
-                        Course</button>
+                    <button type="submit" class="w-full bg-primary text-white px-6 py-3 rounded-xl hover:bg-primary/80 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                        <i class="fas fa-plus-circle mr-2"></i>Create Course
+                    </button>
                 </form>
             </div>
-        </div>
 
-        <!-- Display Courses -->
-        <div class="container mx-auto mt-12">
-            <h2 class="text-3xl font-bold text-center mb-6">Existing Courses</h2>
-            <div class="max-w-screen-xl mx-auto">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Display Courses -->
+            <div>
+                <h2 class="text-2xl font-bold text-primary mb-6">Available Courses</h2>
+                <div class="space-y-6">
                     @foreach ($courses->reverse() as $course)
-                        <div class="bg-white shadow-lg rounded-lg overflow-hidden w-[350px]">
-                            <div class="bg-blue-500 text-white px-6 py-4">
-                                <h5 class="text-xl font-semibold">{{ $course->classes->name }}</h5>
-                            </div>
-                            <div>
-                                <img class="w-full h-[300px] object-cover"
-                                    src="{{ asset('storage/' . $course->file) }}" alt="{{ $course->title }}">
+                        <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-primary/20 transition-all duration-300 hover:shadow-lg hover:border-primary float-animation">
+                            <div class="bg-primary text-white px-6 py-4">
+                                <h3 class="text-lg font-semibold">{{ $course->classes->name }}</h3>
                             </div>
                             <div class="p-6">
-                                <p class="text-sm text-gray-500"><strong>Course name:</strong> {{ $course->title }}</p>
-                                <p class="text-sm text-gray-500"><strong>Category:</strong>
-                                    {{ $course->category ?? 'Uncategorized' }}</p>
-                                <p class="text-gray-700 mt-2 mb-2">
-                                    <strong>Description:</strong>{{ \Str::limit($course->description, 200) }}</p>
+                                <div class="flex items-center mb-4">
+                                    <img class="w-20 h-20 object-cover rounded-xl mr-4" src="{{ asset('storage/' . $course->file) }}" alt="{{ $course->title }}">
+                                    <div>
+                                        <h4 class="font-semibold text-lg mb-1 text-text">{{ $course->title }}</h4>
+                                        <p class="text-sm text-text/70"><span class="font-medium">Category:</span> {{ $course->classes->category ?? 'Uncategorized' }}</p>
+                                    </div>
+                                </div>
+                                <p class="text-text mb-4 text-sm">{{ \Str::limit($course->description, 100) }}</p>
+                                <a href="{{ route('course.lessons', ['course' => $course->id]) }}" class="inline-block bg-accent text-text px-4 py-2 rounded-xl hover:bg-accent/80 transition duration-300 text-sm">
+                                    <i class="fas fa-book-open mr-2"></i>View Details
+                                </a>
                             </div>
                         </div>
                     @endforeach
@@ -106,69 +116,20 @@
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal for Category Selection -->
-    <div id="categoryModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white p-6 w-[300px] rounded-lg shadow-lg">
-            <h3 class="text-xl font-bold text-center mb-4">Choose a Category</h3>
-            <div class="flex flex-wrap justify-center space-x-4">
-                @foreach ($categories as $category)
-                    <button type="button"
-                        class="categoryBtn p-4 border border-blue-300 rounded-lg shadow-md hover:bg-blue-100 focus:outline-none"
-                        data-category="{{ $category }}">
-                        @if ($category == 'Programming')
-                            <i class="fas fa-code text-blue-500 text-2xl"></i>
-                        @elseif($category == 'Design')
-                            <i class="fas fa-paint-brush text-green-500 text-2xl"></i>
-                        @elseif($category == 'Marketing')
-                            <i class="fas fa-chart-line text-red-500 text-2xl"></i>
-                        @elseif($category == 'Business')
-                            <i class="fas fa-briefcase text-yellow-500 text-2xl"></i>
-                        @endif
-                        <span class="mt-2 text-sm text-gray-800">{{ $category }}</span>
-                    </button>
-                @endforeach
-            </div>
-            <div class="mt-4 text-center">
-                <button id="closeModalBtn"
-                    class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const categoryModal = document.getElementById('categoryModal');
-        const chooseCategoryBtn = document.getElementById('chooseCategoryBtn');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const categoryInput = document.getElementById('categoryInput');
-
-        chooseCategoryBtn.addEventListener('click', () => {
-            categoryModal.classList.remove('hidden');
-        });
-
-        closeModalBtn.addEventListener('click', () => {
-            categoryModal.classList.add('hidden');
-        });
-
-        document.querySelectorAll('.categoryBtn').forEach(button => {
-            button.addEventListener('click', (event) => {
-                const selectedCategory = event.target.getAttribute('data-category');
-                categoryInput.value = selectedCategory;
-                categoryModal.classList.add('hidden');
-            });
-        });
-
-        function updateThumbnail(event) {
-            const file = event.target.files[0];
-            const thumbnail = document.getElementById('fileThumbnail');
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    thumbnail.style.backgroundImage = `url(${e.target.result})`;
-                    thumbnail.innerHTML = '';
-                };
-                reader.readAsDataURL(file);
-            }
+<script>
+    function updateThumbnail(event) {
+        const file = event.target.files[0];
+        const thumbnail = document.getElementById('fileThumbnail');
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                thumbnail.style.backgroundImage = `url(${e.target.result})`;
+                thumbnail.innerHTML = '';
+            };
+            reader.readAsDataURL(file);
         }
-    </script>
+    }
+</script>
 @endsection

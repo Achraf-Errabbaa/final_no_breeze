@@ -10,11 +10,13 @@ class CreateLessonsTable extends Migration
     {  
         Schema::create('lessons', function (Blueprint $table) {  
             $table->id();  
-            $table->string('title');  
-            $table->text('description')->nullable(); 
-            $table->string('file')->nullable();
-            $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');  
-            $table->unsignedInteger('duration')->nullable(); // Duration in minutes  
+            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->string('title');
+            $table->text('description');
+            $table->integer('duration')->comment('Duration in minutes');
+            $table->string('video')->nullable();
+            $table->string('pdf')->nullable();
+            $table->longText('content');
             $table->timestamps();  
         });  
     }  

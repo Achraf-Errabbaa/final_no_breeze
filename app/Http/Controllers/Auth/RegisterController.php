@@ -100,7 +100,7 @@ class RegisterController extends Controller
             }
 
             // L'utilisateur est authentifié et approuvé
-            return redirect()->intended('/home'); // Remplacez '/home' par la route appropriée
+            return redirect()->intended('home'); // Remplacez '/home' par la route appropriée
         }
 
         // Si l'authentification échoue

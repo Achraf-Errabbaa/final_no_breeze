@@ -14,6 +14,7 @@ class CreateClassModelsTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedInteger('max_participants');
+            $table->string('category')->nullable();
             $table->timestamps();
         });
     }

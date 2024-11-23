@@ -15,9 +15,8 @@ class CourseController extends Controller
         $classes = ClassModel::all();
 
         $courses = Course::all();
-        $categories = ['Programming', 'Design', 'Marketing', 'Business'];
         // Pass the courses and classes to the view
-        return view('coach.course', compact('courses', 'categories', 'classes'));
+        return view('coach.course', compact('courses', 'classes'));
     }
     public function index2()
     {
@@ -38,9 +37,9 @@ class CourseController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'class_id' => 'required|exists:classmodels,id',
-            'category' => 'required|string|max:255',
             'file' => 'required|file|mimes:pdf,jpg,jpeg,png,mp4,avi,mov'
         ]);
+        
         $file = $request->file("file")->store("images", "public");
         // Create a new course using the validated data
 
@@ -48,9 +47,9 @@ class CourseController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'file' => $file,
-            'category' => $request->category,
             'class_id' => $request->class_id,
         ]);
+        
         // Redirect to the course management page with a success message
         return redirect()->route('coach.course')->with('success', 'Course created successfully!');
     }

@@ -26,37 +26,42 @@ class LessonController extends Controller
 
     // Store a newly created lesson for a specific course
     public function store(Request $request, Course $course)
-    {
-        // Validate the incoming request data
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'file' => 'required|file',
-            'duration' => 'required|integer',
-        ]);
+{
+    // Validate the incoming request data
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'duration' => 'required|integer|min:1',
+        'video' => 'nullable|file|mimes:mp4,mov,avi|max:102400', // Video validation
+        'pdf' => 'nullable|file|mimes:pdf|max:10240', // PDF validation
+        'content' => 'required|string',
+    ]);
 
-        // $file = $request->file;
-        // $fileName = hash("sha256", file_get_contents($file)) . "." . $file->getClientOriginalExtension();
-        // $file->move(storage_path("app/public/images"), $fileName);
+    // Create a new Lesson instance and fill it with the request data
+    $lesson = new Lesson([
+        'title' => $request->title,
+        'description' => $request->description,
+        'duration' => $request->duration,
+        'content' => $request->content,
+    ]);
 
-        $file = $request->file("file")->store("images", "public");
-        // Add the course_id to the validated data to associate the lesson with the course
-        // $validated['course_id'] = $course->id;
-        // $validated['file'] = $file;
-
-        // // Create a new lesson associated with the course
-        // Lesson::create($validated);
-        lesson::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'file' => $file,
-            'duration' => $request->duration,
-            'course_id' => $course->id,
-        ]);
-
-        // Redirect back to the same page with success message
-        return redirect()->route('lessons.store', ['course' => $course->id])->with('success', 'Lesson created successfully!');
+    // Handle video upload (if provided)
+    if ($request->hasFile('video')) {
+        $lesson->video = $request->file('video')->store('lesson_videos', 'public'); // Save video file in 'public/lesson_videos'
     }
+
+    // Handle PDF upload (if provided)
+    if ($request->hasFile('pdf')) {
+        $lesson->pdf = $request->file('pdf')->store('lesson_pdfs', 'public'); // Save PDF file in 'public/lesson_pdfs'
+    }
+
+    // Associate the lesson with the course and save it
+    $course->lessons()->save($lesson);
+
+    // Redirect back to the lessons page with a success message
+    return redirect()->route('coach.lesson', $course)->with('success', 'Lesson created successfully.');
+}
+
     public function destroy(Lesson $lesson)
     {
         $lesson->delete();

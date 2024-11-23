@@ -43,7 +43,7 @@ class LoginController extends Controller
             if ($user->status === 'pending') {
                 // Si l'utilisateur est en attente, on le déconnecte immédiatement
                 Auth::logout();
-                return redirect()->route('login')->with('error', 'Votre compte est en attente d\'approbation.');
+                return redirect()->route('home.home')->with('error', 'Votre compte est en attente d\'approbation.');
             }
 
             
